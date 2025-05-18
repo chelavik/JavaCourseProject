@@ -9,7 +9,6 @@ import org.example.dto.booking.UpdateBookingRequest;
 import org.example.dto.user.AdminUpdateUserRequest;
 import org.example.dto.user.UserDto;
 import org.example.dto.workspace.CreateWorkspaceRequest;
-import org.example.dto.workspace.UpdateWorkspaceRequest;
 import org.example.dto.workspace.WorkspaceDto;
 import org.example.service.TokenValidationService;
 import org.example.service.booking.BookingService;
@@ -139,6 +138,5 @@ public class AdminController {
         WorkspaceDto updated = workspaceService.updateStatus(id, active);
         return ResponseEntity.ok(updated);
     }
-
 
 }

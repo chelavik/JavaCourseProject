@@ -1,0 +1,155 @@
+definitions:
+  internal_app.ErrorResponse:
+    properties:
+      code:
+        example: 401
+        type: integer
+      error:
+        example: invalid token
+        type: string
+    type: object
+  internal_app.LoginRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: strongPassword123!
+        type: string
+    type: object
+  internal_app.LoginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    type: object
+  internal_app.RegisterRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: strongPassword123!
+        type: string
+    type: object
+  internal_app.ValidateResponse:
+    properties:
+      expires_at:
+        example: 1735689600
+        type: integer
+      user_id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      valid:
+        example: true
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для аутентификации и управления пользователями
+  title: Auth Service API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_app.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный вход
+          schema:
+            $ref: '#/definitions/internal_app.LoginResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+        "401":
+          description: Неверные учетные данные
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+      summary: Аутентификация пользователя
+      tags:
+      - Authentication
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_app.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+        "409":
+          description: Пользователь уже существует
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+      summary: Регистрация нового пользователя
+      tags:
+      - Authentication
+  /api/auth/validate:
+    get:
+      description: Проверяет действительность токена и возвращает информацию о пользователе
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_app.ValidateResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_app.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Проверка валидности JWT токена
+      tags:
+      - Authentication
+  /health:
+    get:
+      responses:
+        "200":
+          description: Статус сервиса
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Проверка здоровья сервиса
+      tags:
+      - service
+securityDefinitions:
+  BearerAuth:
+    description: Введите "Bearer <JWT-токен>" для авторизации
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

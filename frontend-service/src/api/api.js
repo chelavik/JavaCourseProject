@@ -11,12 +11,11 @@ export async function login(email, password) {
 }
 
 export async function register(email, password) {
-  const res = await fetch(`${AUTH_API}/register`, {
+  await fetch(`${AUTH_API}/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   });
-  return res.json();
 }
 
 export async function getMe(token) {
@@ -79,7 +78,7 @@ export const createWorkspace = async (token, name, capacity) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Authorization': token,
     },
     body: JSON.stringify({
       name: name,
@@ -92,17 +91,26 @@ export const createWorkspace = async (token, name, capacity) => {
     throw new Error(error.message || 'Failed to create workspace');
   }
 };
+export async function bookWorkspace(token, workspaceId, start, end, date) {
+    const res = await fetch(`${API_BASE}/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ 
+        workspaceId,
+        date,
+        startTime: start,  
+        endTime: end         
+      })
+    });
 
-export async function book(token, workspaceId, slotTime) {
-  const res = await fetch(`${API_BASE}/bookings`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token
-    },
-    body: JSON.stringify({ workspaceId, slotTime })
-  });
-  return res.json();
+    if (!res.ok) {
+      throw new Error('Ошибка при бронировании');
+    }
+
+    return res.json();
 }
 
 export async function getMyBookings(token) {
@@ -153,7 +161,7 @@ export async function getAllUsers(token) {
 }
 
 export async function updateMyName(token, name) {
-  const res = await fetch('/api/users/me', {
+  const res = await fetch(`${API_BASE}/users/me`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -166,5 +174,16 @@ export async function updateMyName(token, name) {
     throw new Error('Ошибка при обновлении имени');
   }
 
+  return res.json();
+}
+
+export async function getAvailableWorkspaces(token, start, end) {
+  const params = new URLSearchParams({ start, end });
+  const res = await fetch(`${API_BASE}/workspaces/available?${params.toString()}`, {
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+    }
+  });
   return res.json();
 }

@@ -1,0 +1,22 @@
+.workspace-details {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.workspace-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.workspace-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.workspace-loading {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+}

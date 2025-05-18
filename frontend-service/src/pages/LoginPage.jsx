@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { login } from '../api/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles.css';
 
 export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await login(email, password);
     if (data.token) {
       onLogin(data.token);
+      navigate('/');
     } else {
       alert('Login failed');
     }

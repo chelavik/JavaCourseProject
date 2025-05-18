@@ -1,0 +1,32 @@
+image: gradle:8.12.1-jdk21
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - test
+
+test:
+  stage: test
+  tags:
+    - students-buildkit-medium
+  script:
+    - cd main-service
+    - chmod +x ./gradlew
+    - ./gradlew test --info
+  artifacts:
+    reports:
+      junit: main-service/build/test-results/test/TEST-*.xml
+    paths:
+      - main-service/build/test-results/
+      - main-service/build/reports/
+    when: always
+  cache:
+    paths:
+      - main-service/.gradle/
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && $CI_COMMIT_BRANCH == "dev"'

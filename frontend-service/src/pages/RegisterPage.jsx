@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { register } from '../api/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles.css';
 
 export default function RegisterPage({ onRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await register(email, password);
     if (data.token) {
       onRegister(data.token);
+      navigate('/');
     } else {
       alert('Registration failed');
     }

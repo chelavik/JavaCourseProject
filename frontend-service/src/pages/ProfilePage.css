@@ -71,3 +71,86 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.booking-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1em;
+}
+
+.booking-item {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.booking-item.cancelled {
+  background-color: #eee;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.profile-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-form label {
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.profile-form input {
+  padding: 8px;
+  font-size: 16px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-form button {
+  width: fit-content;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-form button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 10px;
+  font-size: 14px;
+  color: green;
+}
+
+.booking-item button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #d9534f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.booking-item button:hover {
+  background-color: #c9302c;
+}
+
+.toggle-cancelled {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+}

@@ -9,7 +9,7 @@ import (
 
 const (
 	tokenTTL  = 12 * time.Hour
-	secretKey = "super-secret-key"
+	secretKey = "super-secret-key-fdf69814596a2de21f986bb0e2f8b46a4ffd167c8af36226ff678aea490bd5a5b6"
 )
 
 type Claims struct {

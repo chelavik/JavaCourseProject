@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	_ "auth-service/docs"
 
@@ -35,7 +36,10 @@ type Server struct {
 // @name Authorization
 // @description Введите "Bearer <JWT-токен>" для авторизации
 func NewServer(addr, dbDSN string) (*Server, error) {
-	db, err := pgxpool.New(context.Background(), dbDSN)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second) // <-- таймаут подключения
+	defer cancel()
+
+	db, err := pgxpool.New(ctx, dbDSN)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create db pool: %w", err)
 	}
@@ -44,7 +48,7 @@ func NewServer(addr, dbDSN string) (*Server, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	if err := runMigrations(db); err != nil {
+	if err := runMigrations(ctx, db); err != nil {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
 
@@ -99,7 +103,7 @@ func (s *Server) Stop(ctx context.Context) error {
 	return nil
 }
 
-func runMigrations(db *pgxpool.Pool) error {
+func runMigrations(ctx context.Context, db *pgxpool.Pool) error {
 	adminPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
 	db.Exec(context.Background(), `
 		CREATE TABLE IF NOT EXISTS users (
@@ -251,17 +255,17 @@ func (s *Server) validateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func corsMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        w.Header().Set("Access-Control-Allow-Credentials", "true")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-        if r.Method == http.MethodOptions {
-            w.WriteHeader(http.StatusOK)
-            return
-        }
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 
-        next.ServeHTTP(w, r)
-    })
+		next.ServeHTTP(w, r)
+	})
 }

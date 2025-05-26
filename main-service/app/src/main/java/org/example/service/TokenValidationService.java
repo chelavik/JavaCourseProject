@@ -70,7 +70,6 @@ public class TokenValidationService {
         try {
             ResponseEntity<TokenValidationResponse> response =
                     restTemplate.exchange(url, HttpMethod.POST, entity, TokenValidationResponse.class);
-            System.out.println(response.getBody());
             if (response.getBody() != null) {
                 if (Boolean.TRUE.equals(response.getBody().getValid())) {
                     return UUID.fromString(response.getBody().getUserId());

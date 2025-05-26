@@ -3,17 +3,17 @@ import { register } from '../api/api';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles.css';
 
-export default function RegisterPage({ onRegister }) {
+export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await register(email, password);
-    if (data.token) {
-      onRegister(data.token);
+    const status = await register(email, password);
+    if (status === 201) {
       navigate('/');
+      alert('Успех! Войдите в аккаунт.');
     } else {
       alert('Registration failed');
     }

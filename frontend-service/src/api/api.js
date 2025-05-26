@@ -11,11 +11,12 @@ export async function login(email, password) {
 }
 
 export async function register(email, password) {
-  await fetch(`${AUTH_API}/register`, {
+  const res = await fetch(`${AUTH_API}/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   });
+  return res.status;
 }
 
 export async function getMe(token) {

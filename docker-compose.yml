@@ -25,6 +25,7 @@ services:
       - "8080:8080"
     environment:
       DB_DSN: "postgres://postgres:authpass@auth-db:5432/auth_db?sslmode=disable"
+      INTERNAL_KEY: "c388f25e7cd798fb5cf34c1c97232332096f5d86a8d916df5d8c29d8ba5e3ef2"
     depends_on:
       auth-db:
         condition: service_healthy

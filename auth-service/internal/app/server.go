@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	_ "auth-service/docs"
@@ -158,7 +159,7 @@ func (s *Server) registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	secret := "my-secure-token"
+	secret := os.Getenv("INTERNAL_KEY")
 	go func() {
 		payload := map[string]string{
 			"id":    userID.String(),

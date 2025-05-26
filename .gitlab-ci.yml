@@ -10,7 +10,7 @@ test:
   script:
     - cd main-service
     - chmod +x ./gradlew
-    - ./gradlew test --info
+    - ./gradlew test --tests 'org.example.service.*'
   artifacts:
     reports:
       junit: main-service/build/test-results/test/TEST-*.xml

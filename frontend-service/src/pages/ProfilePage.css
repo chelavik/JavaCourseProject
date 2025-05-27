@@ -1,0 +1,156 @@
+.profile-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.profile-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  transition: border 0.2s;
+}
+
+.profile-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.profile-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profile-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.profile-button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+.profile-error {
+  color: #d9534f;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.profile-success {
+  color: #28a745;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.booking-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1em;
+}
+
+.booking-item {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.booking-item.cancelled {
+  background-color: #eee;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.profile-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-form label {
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.profile-form input {
+  padding: 8px;
+  font-size: 16px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-form button {
+  width: fit-content;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-form button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 10px;
+  font-size: 14px;
+  color: green;
+}
+
+.booking-item button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #d9534f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.booking-item button:hover {
+  background-color: #c9302c;
+}
+
+.toggle-cancelled {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+}

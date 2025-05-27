@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  auth-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: authpass
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_DSN: "postgres://postgres:authpass@auth-db:5432/auth_db?sslmode=disable"
+      INTERNAL_KEY: "c388f25e7cd798fb5cf34c1c97232332096f5d86a8d916df5d8c29d8ba5e3ef2"
+    depends_on:
+      auth-db:
+        condition: service_healthy
+  
+  main-service-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mainpass
+      POSTGRES_DB: main_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - main-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  main-service:
+    build:
+      context: ./main-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://main-service-db:5432/main_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mainpass
+      SPRING_SQL_INIT_MODE: always
+    depends_on:
+      main-service-db:
+        condition: service_healthy
+    
+  frontend:
+    build:
+      context: ./frontend-service
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+    - ./frontend-service:/app
+    - /app/node_modules
+    depends_on:
+      - auth-service
+      - main-service
+
+volumes:
+  auth-db-data:
+  main-db-data:

@@ -1,0 +1,61 @@
+.workspace-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+.workspace-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.workspace-card.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.workspace-name {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  color: #34495e;
+}
+
+.workspace-description {
+  flex-grow: 1;
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.workspace-status {
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.workspace-status.active {
+  color: #27ae60;
+}
+
+.workspace-status.disabled {
+  color: #c0392b;
+}
+
+.details-link {
+  align-self: flex-start;
+  text-decoration: none;
+  color: #2980b9;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.details-link:hover {
+  color: #1c5980;
+  text-decoration: underline;
+}
